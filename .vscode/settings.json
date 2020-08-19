@@ -1,0 +1,4 @@
+{
+    "python.pythonPath": "/home/andrew/.cache/pypoetry/virtualenvs/offical-flask-OW8ED0HM-py3.8/bin/python",
+    "python.formatting.provider": "black"
+}
