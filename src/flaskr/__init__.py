@@ -36,4 +36,8 @@ def create_app(test_config: Dict[str, str] = None) -> Flask:
 
     db.init_app(app)
 
+    from . import auth
+
+    app.register_blueprint(auth.bp)
+
     return app
