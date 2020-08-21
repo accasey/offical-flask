@@ -13,7 +13,9 @@ from flask import (
     session,
     url_for,
 )
+from werkzeug import Response
 from werkzeug.security import check_password_hash, generate_password_hash
+
 
 from flaskr.db import get_db
 
@@ -21,18 +23,18 @@ bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 @bp.route("/register", methods=["GET", "POST"])
-def register() -> str:
+def register() -> Any:
     """Handle the registration form.
 
     Returns:
-        str: Either The HTML for the form (GET) or a URL (POST).
+        Any: Either The HTML for the form (GET) or a URL (POST).
     """
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
 
         db = get_db()
-        error: str = None
+        error: Any = None
 
         if not username:
             error = "Username is required."
@@ -58,19 +60,19 @@ def register() -> str:
 
 
 @bp.route("/login", methods=["GET", "POST"])
-def login() -> str:
+def login() -> Any:
     """Handle the login form. Either validating credentials or \
     presenting the form for login.
 
     Returns:
-        str: Either The HTML for the form (GET) or a URL (POST).
+        Any: Either The HTML for the form (GET) or a URL (POST).
     """
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
 
         db: Any = get_db()
-        error: str = None
+        error: Any = None
 
         user: Dict[str, str] = db.execute(
             "SELECT * FROM user WHERE username = ?", (username,)
@@ -108,11 +110,11 @@ def load_logged_in_user() -> None:
 
 
 @bp.route("/logout")
-def logout() -> str:
+def logout() -> Response:
     """Logs out the current user and returns the index page.
 
     Returns:
-        str: The url for the index page.
+        Response: The url for the index page.
     """
     session.clear()
     return redirect(url_for("index"))

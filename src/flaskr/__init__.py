@@ -36,8 +36,10 @@ def create_app(test_config: Dict[str, str] = None) -> Flask:
 
     db.init_app(app)
 
-    from . import auth
+    from . import auth, blog
 
     app.register_blueprint(auth.bp)
+    app.register_blueprint(blog.bp)
+    app.add_url_rule("/", endpoint="index")
 
     return app
