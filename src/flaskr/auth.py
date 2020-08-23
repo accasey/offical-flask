@@ -1,6 +1,7 @@
 """Authentication for the Flaskr application."""
 
 import functools
+from sqlite3 import Connection
 from typing import Any, Dict
 
 from flask import (
@@ -33,7 +34,7 @@ def register() -> Any:
         username = request.form["username"]
         password = request.form["password"]
 
-        db = get_db()
+        db: Connection = get_db()
         error: Any = None
 
         if not username:
@@ -61,8 +62,9 @@ def register() -> Any:
 
 @bp.route("/login", methods=["GET", "POST"])
 def login() -> Any:
-    """Handle the login form. Either validating credentials or \
-    presenting the form for login.
+    """Handle the login form.
+
+    Either validating credentials or presenting the form for login.
 
     Returns:
         Any: Either The HTML for the form (GET) or a URL (POST).
@@ -71,7 +73,7 @@ def login() -> Any:
         username = request.form["username"]
         password = request.form["password"]
 
-        db: Any = get_db()
+        db: Connection = get_db()
         error: Any = None
 
         user: Dict[str, str] = db.execute(
@@ -95,10 +97,13 @@ def login() -> Any:
 
 @bp.before_app_request
 def load_logged_in_user() -> None:
-    """Checks if a user id is stored in the session and gets that user’s\
-    data from the database, storing it in the global vairable g.user, which\
-    lasts for the length of the request. If there is no user id, or if the\
-    id doesn’t exist, g.user will be None."""
+    """Checks if a user id is stored in the session.
+
+    Gets that user’sdata from the database, storing it in g.user, which lasts\
+    for the length of the request.
+
+    If there is no user id, or if the id doesn’t exist, g.user will be None.
+    """
     user_id = session.get("user_id")
 
     if user_id is None:

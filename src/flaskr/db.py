@@ -1,17 +1,17 @@
 """Ensure that the database is available."""
 import sqlite3
-from typing import Any
+from sqlite3 import Connection
 
 import click
 from flask import current_app, Flask, g
 from flask.cli import with_appcontext
 
 
-def get_db() -> Any:
-    """Returns an instance of the database.
+def get_db() -> Connection:
+    """Returns a connetion to the database.
 
     Returns:
-        Any: The sqllite database
+        Connection: The sqlite3 database connection.
     """
     if "db" not in g:
         g.db = sqlite3.connect(
@@ -19,14 +19,15 @@ def get_db() -> Any:
         )
         g.db.row_factory = sqlite3.Row
 
+    print(type(g.db))
     return g.db
 
 
-def close_db(e: Any = None) -> None:
+def close_db(e: Exception = None) -> None:
     """Close the database instance and remove it from the global variable.
 
     Args:
-        e (Any): Defaults to None.
+        e (Exception): Defaults to None.
     """
     db = g.pop("db", None)
 
@@ -36,7 +37,7 @@ def close_db(e: Any = None) -> None:
 
 def init_db() -> None:
     """Initalise the database by creating the tables."""
-    db = get_db()
+    db: Connection = get_db()
 
     with current_app.open_resource("schema.sql", "r") as f:
         # db.executescript(f.read().decode("utf8"))
@@ -52,7 +53,12 @@ def init_db_command() -> None:
 
 
 def init_app(app: Flask) -> None:
-    """Register the close_db and init_db_command functions with \
-    the application instance."""
+    """Register the close_db and init_db_command functions.
+
+    egister the functions with the Flask application instance.
+
+    Args:
+        app (Flask): The Flask application instance.
+    """
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)

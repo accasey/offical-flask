@@ -1,5 +1,6 @@
 """The blog."""
-from typing import Any, Dict, Optional
+from sqlite3 import Connection
+from typing import Any, Dict, List, Optional
 
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from werkzeug import Response
@@ -45,8 +46,8 @@ def index() -> str:
     Returns:
         str: The HTML for index.html.
     """
-    db: Any = get_db()
-    posts: Dict[str, str] = db.execute(
+    db: Connection = get_db()
+    posts: List[Any] = db.execute(
         "SELECT p.id, p.title, p.body, p.created, p.author_id, u.username"
         " FROM post p JOIN user u ON p.author_id = u.id"
         " ORDER BY p.created DESC"
@@ -77,7 +78,7 @@ def create() -> Any:
         if error is not None:
             flash(error)
         else:
-            db: Any = get_db()
+            db: Connection = get_db()
             db.execute(
                 "INSERT INTO post (title, body, author_id)" " VALUES (?, ?, ?)",
                 (title, body, g.user["id"]),
@@ -115,7 +116,7 @@ def update(id: int) -> Any:
         if error is not None:
             flash(error)
         else:
-            db: Any = get_db()
+            db: Connection = get_db()
             db.execute(
                 "UPDATE post SET title = ?, body = ?" "WHERE id = ?", (title, body, id)
             )
@@ -136,7 +137,7 @@ def delete(id: int) -> Response:
     Returns:
         Response: The blog index url.
     """
-    db: Any = get_db()
+    db: Connection = get_db()
     db.execute("DELETE FROM post WHERE id = ?", (id,))
     db.commit()
 

@@ -1,13 +1,13 @@
 """Use an application factory to create the Flask instance."""
 import os
-from typing import Dict
+from typing import Any, Dict
 
 from flask import Flask
 
 __version__ = "0.1.0"
 
 
-def create_app(test_config: Dict[str, str] = None) -> Flask:
+def create_app(test_config: Dict[str, Any] = None) -> Flask:
     """Create and configure the app object."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
