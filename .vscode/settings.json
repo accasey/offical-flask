@@ -2,5 +2,11 @@
     "python.pythonPath": "/home/andrew/.cache/pypoetry/virtualenvs/offical-flask-OW8ED0HM-py3.8/bin/python",
     "python.formatting.provider": "black",
     "python.linting.flake8Enabled": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true
 }
