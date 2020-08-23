@@ -24,7 +24,7 @@ def get_post(id: int, check_author: Optional[bool] = True) -> Dict[str, str]:
     """
     post: Dict[str, str] = get_db().execute(
         "SELECT p.id, p.title, p.body, p.created, p.author_id, u.username"
-        " FROM post p, user u ON p.authod_id = u.id"
+        " FROM post p, user u ON p.author_id = u.id"
         " WHERE p.id = ?",
         (id,),
     ).fetchone()
@@ -55,7 +55,7 @@ def index() -> str:
     return render_template("blog/index.html", posts=posts)
 
 
-@bp.route("create", methods=["GET", "POST"])
+@bp.route("/create", methods=["GET", "POST"])
 @login_required
 def create() -> Any:
     """Handles the create.html page.
