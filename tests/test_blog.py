@@ -24,11 +24,12 @@ def test_index(client: FlaskClient, auth: AuthActions) -> None:
 
     auth.login()
     r1: Response = client.get("/")
+
     assert b"Log Out" in r1.data
     assert b"test title" in r1.data
-    assert b"by test n 2018-01-01" in r1.data
+    assert b"by test on 2018-01-01" in r1.data
     assert b"test\nbody" in r1.data
-    assert b"href='/1/update'" in r1.data
+    assert b'href="/1/update"' in r1.data
 
 
 @pytest.mark.parametrize("path", ("/create", "/1/update", "/1/delete",))

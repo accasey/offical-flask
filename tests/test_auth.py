@@ -35,7 +35,7 @@ def test_register(client: FlaskClient, app: Flask) -> None:
     (
         ("", "", b"Username is required."),
         ("a", "", b"Password is required."),
-        ("test", "test", b"Already registered"),
+        ("test", "test", b"already registered"),
     ),
 )
 def test_register_validate_input(

@@ -7,8 +7,7 @@ from nox.sessions import Session
 
 
 package = "flaskr"
-nox.options.sessions = "lint", "mypy", "black"
-# nox.options.sessions = "lint", "mypy", "tests"
+nox.options.sessions = "lint", "safety", "mypy", "black", "tests"
 locations = "src", "tests", "noxfile.py", "docs/conf.py"
 
 

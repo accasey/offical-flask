@@ -1,6 +1,7 @@
 """Configuration file for pytest."""
 
 import os
+import sys
 import tempfile
 from typing import Any, Generator, Optional
 
@@ -8,8 +9,9 @@ from flask import Flask, Response
 from flask.testing import FlaskClient, FlaskCliRunner
 import pytest
 
-from flaskr import create_app
-from flaskr.db import get_db, init_db
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
+from flaskr import create_app  # noqa
+from flaskr.db import get_db, init_db  # noqa
 
 with open(os.path.join(os.path.dirname(__file__), "data.sql"), "rb") as f:
     _data_sql = f.read().decode("utf8")

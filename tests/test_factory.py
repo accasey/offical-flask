@@ -19,4 +19,4 @@ def test_hello(client: FlaskClient) -> None:
         client (FlaskClient): The flaskr test client.
     """
     response: Response = client.get("/hello")
-    assert response.data == b"Hello, World!"
+    assert response.data == b"<h1>Hello, World!</h1>"

@@ -1,6 +1,6 @@
 """The blog."""
 from sqlite3 import Connection
-from typing import Any, Dict, List, Optional
+from typing import Any, List, Optional
 
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from werkzeug import Response
@@ -12,7 +12,7 @@ from flaskr.db import get_db
 bp = Blueprint("blog", __name__)
 
 
-def get_post(id: int, check_author: Optional[bool] = True) -> Dict[str, str]:
+def get_post(id: int, check_author: Optional[bool] = True) -> Any:
     """Retrieve a specific post from the database.
 
     Args:
@@ -21,9 +21,9 @@ def get_post(id: int, check_author: Optional[bool] = True) -> Dict[str, str]:
         Defaults to True.
 
     Returns:
-        Dict[str, str]: The post row returned as a dict.
+        Any: The post row returned as a dict.
     """
-    post: Dict[str, str] = get_db().execute(
+    post: Any = get_db().execute(
         "SELECT p.id, p.title, p.body, p.created, p.author_id, u.username"
         " FROM post p, user u ON p.author_id = u.id"
         " WHERE p.id = ?",
@@ -103,7 +103,7 @@ def update(id: int) -> Any:
     Returns:
         Any: Either the url for the index or the html for the create page.
     """
-    post: Dict[str, str] = get_post(id)
+    post: Any = get_post(id)
 
     if request.method == "POST":
         title: str = request.form["title"]
